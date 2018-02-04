@@ -8,11 +8,17 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
 
 fun main(args: Array<String>) {
     val programArgs = Args()
-    JCommander.newBuilder()
+    val jcCommander = JCommander.newBuilder()
             .programName("DeviceEmulator")
             .addObject(programArgs)
             .build()
-            .parse(*args)
+
+    jcCommander.parse(*args)
+
+    if (programArgs.help) {
+        jcCommander.usage()
+        return
+    }
 
     val brokerAddress = "tcp://${programArgs.host}:${programArgs.port}"
     val clientId = generateClientId()
